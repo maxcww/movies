@@ -1,0 +1,17 @@
+{
+  "name": "sf_movies",
+  "version": "1.0.0",
+  "description": "Map with all movies in San Francisco",
+  "author": "Max Wong wong@live.nl",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.14.1",
+    "mongodb": "^2.0.55",
+    "nodemon": "^1.12.1",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0"
+  }
+}
