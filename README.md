@@ -3,7 +3,7 @@
 ## Production information
 
 ### Description
-This service provides the user with a map of San Francisco with markers of movies that have been filmed there. Te user is able to filter the view using autocompletion search.
+This service provides the user with a map of San Francisco with markers of movies that have been filmed there. The user is able to filter the view using autocompletion search.
 
 ### Software requirement
 1. Docker
@@ -16,15 +16,15 @@ This service provides the user with a map of San Francisco with markers of movie
 
 ### Getting started instructions
 1. Go to the root folder
-2. Run docker-compose build
-3. Run docker-compose up
+2. Run `docker-compose build`
+3. Run `docker-compose up`
 
 For consequent runs `docker-compose up` will suffice.
 
 ### Required configuration
 Put the needed json datasets in the datasets folder. They need to be in the same format as the [San Francisco one](https://data.sfgov.org/Culture-and-Recreation/Film-Locations-in-San-Francisco/yitu-d5am)
 
-Each json dataset has to be of extension .json and as name the city like: San Francisco.json
+Each json dataset has to be of extension .json and as filename the city like: San Francisco.json
 
 ### Application Architecture
 * Back-end: Node JS
@@ -55,7 +55,10 @@ As I do not have much experience in front-end I have choosen for React as the te
 #### Node JS
 Not much choice here.
 
-## #Choices
+#### Docker
+It makes it easy to deploy everywhere.
+
+### Choices
 
 ### LinkedIn
 
