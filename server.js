@@ -15,51 +15,62 @@ const DATASETS_FOLDER = '/app/datasets/'
 
 const app = express();
 
-client.connect(DB_URL, function (err, db) {
-  if (err) throw err;
-
-  // First insert datasets into the database that do not exist yet in the
-  // database from the datasets folder.
-  fs.readdir(DATASETS_FOLDER, function (err, files) {
-    if (err) throw err;
-
-    db.listCollections().toArray(function (err, collections) {
-      if (err) throw err;
-
-      var collectionNames = [];
-      for (var i=0; i < collections.length; i++) {
-        collectionNames.push(collections[i]['name']);
+function onConnectAndReaddirAndCollectionNames(db, files, collectionNames) {
+  return Promise.all(files.map(function (file) {
+    const file_path = path.join(DATASETS_FOLDER, file);
+    return new Promise(function (resolve, reject) {
+      fs.stat(file_path, function(err, stat) {
+        if (err) return reject(err);
+        resolve(stat);
+      });
+    }).then(function (stat) {
+      if (stat.isFile()) {
+        const place = getPlace(file);
+        if (collectionNames.indexOf(place) == -1) {
+          return insertDataInCollection(place, db, file_path);
+        }
       }
+    }).then(function () {
+      return true;
+    }).catch(console.log.bind(console));
+  }));
+}
 
-      var file_path;
-      var place;
-      var file;
-      for (var i=0; i < files.length; i++) {
-        file = files[i];
-        file_path = path.join(DATASETS_FOLDER, file);
+function onConnectAndReaddir(db, files) {
+  return new Promise(function (resolve, reject) {
+    resolve(db.listCollections().toArray());
+  }).then(function (collections) {
+    return Promise.all(collections.map(function (collection) {
+      return collection['name'];
+    }));
+  }).then(function (collectionNames) {
+    return onConnectAndReaddirAndCollectionNames(db, files, collectionNames);
+  }).catch(console.log.bind(console));
+}
 
-        // readdir also gets . and .., so check if it really is a file
-        fs.stat(file_path, function (err, stat) {
-          if (err) throw err;
-
-          if (stat.isFile()) {
-            place = getPlace(file);
-            if (collectionNames.indexOf(place) == -1) {
-              insertDataInCollection(place, db, file_path);
-            }
-          }
-        });
-      }
+function onConnect(db) {
+  return new Promise(function (resolve, reject) {
+    fs.readdir(DATASETS_FOLDER, function (err, files) {
+      if (err) return reject(err);
+      resolve(files);
     });
-  });
+  }).then(function (files) {
+    return onConnectAndReaddir(db, files);
+  }).catch(console.log.bind(console));
+}
 
-  app.get('/', (req, res) => {
-      res.send(`${DB_URL}\n`);
-  });
+client.connect(DB_URL)
+  .then(onConnect)
+  .then(function (val) {
+    console.log(val)
+  }).catch(console.log.bind(console));
 
-  app.listen(PORT, HOST);
-  console.log(`Running on http://${HOST}:${PORT}`);
+app.get('/', (req, res) => {
+    res.send(`${DB_URL}\n`);
 });
+
+app.listen(PORT, HOST);
+console.log(`Running on http://${HOST}:${PORT}`);
 
 // Removes the .json at the end of filename
 function getPlace(filename) {
@@ -71,9 +82,9 @@ function insertDataInCollection(place, db, file_path) {
   fs.readFile(file_path, 'utf8', function (err, data) {
     if (err) throw err;
     
-    var obj = JSON.parse(data);
-    var columnIndices = getColumnIndices(obj['meta']['view']['columns'])
-    var toInsert = createInsertData(obj['data'], columnIndices);
+    const obj = JSON.parse(data);
+    const columnIndices = getColumnIndices(obj['meta']['view']['columns'])
+    const toInsert = createInsertData(obj['data'], columnIndices);
     db.collection(place).insertMany(toInsert, function (err, res) {
       if (err) throw err;
     });
@@ -82,8 +93,8 @@ function insertDataInCollection(place, db, file_path) {
 
 // Returns a list of {column name: column index}
 function getColumnIndices(columns) {
-  var columnIndices = {};
-  for (var i=0; i < columns.length; i++) {
+  let columnIndices = {};
+  for (let i in columns) {
     if (columns[i]['dataTypeName'] !== 'meta_data') {
       columnIndices[columns[i]['name']] = i;
     }
@@ -93,14 +104,11 @@ function getColumnIndices(columns) {
 
 // Creates the list of inserts from the data with the columns in columnIndices
 function createInsertData(data, columnIndices) {
-  var toInsert = []
-  var row;
-  for (var i=0; i < data.length; i++) {
-    row = {}
-    for (var col in columnIndices) {
-      row[col] = data[i][columnIndices[col]];
-    }
-    toInsert.push(row);
-  }
-  return toInsert;
+  return data.map(function (dataRow) {
+    let row = {}
+    for (let col in columnIndices) {
+      row[col] = dataRow[columnIndices[col]];
+    } 
+    return row; 
+  });
 }
