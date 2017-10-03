@@ -7,7 +7,7 @@ const fs = require('fs');
 const path = require('path');
 
 // Globals
-const PORT = 3000;
+const PORT = 8080;
 const HOST = '0.0.0.0';
 const DB_PORT = 27017;
 const DB_URL = `mongodb://mongo:${DB_PORT}/moviedb`;

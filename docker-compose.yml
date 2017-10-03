@@ -1,16 +1,5 @@
 version: "2"
 services:
-    app:
-        container_name: app
-        # restart: always
-        build: .
-        ports:
-            - "3000:3000"
-        links:
-            - mongo
-        volumes:
-            - .:/app/
-            - /app/node_modules
     mongo:
         container_name: mongo
         image: mongo
@@ -18,3 +7,27 @@ services:
             - ./data:/data/db
         ports:
             - "27017:27017"
+    web:
+        container_name: web
+        build: ./frontend
+        ports:
+            - "3000:3000"
+        links:
+            - app
+        volumes:
+            - ./frontend:/app/
+            - /app/node_modules
+        command: npm start
+    app:
+        container_name: app
+        restart: always
+        build: ./backend
+        ports:
+            - "8080:8080"
+        links:
+            - mongo
+        volumes:
+            - ./backend:/app/
+            - /app/node_modules
+        depends_on:
+            - mongo
