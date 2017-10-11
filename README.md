@@ -1,37 +1,60 @@
 # San Francisco movies
 
-## Production information
+# Production information
 
-### Description
+## Description
 This service provides the user with a map of San Francisco with markers of movies that have been filmed there. The user is able to filter the view using autocompletion search.
 
-### Software requirement
-1. Docker
+## Software requirement
+1. docker-compose
 
-### Dependencies
-1. express
-2. mongodb
-3. react
-4. react-dom
-
-### Getting started instructions
-1. Go to the root folder
-2. Run `docker-compose build`
-3. Run `docker-compose up`
-
-For consequent runs `docker-compose up` will suffice.
-
-### Required configuration
-Put the needed json datasets in the datasets folder. They need to be in the same format as the [San Francisco one](https://data.sfgov.org/Culture-and-Recreation/Film-Locations-in-San-Francisco/yitu-d5am)
+## Required configuration
+Put the needed json datasets in the backend/datasets folder. They need to be in the same format as the [San Francisco one](https://data.sfgov.org/Culture-and-Recreation/Film-Locations-in-San-Francisco/yitu-d5am)
 
 Each json dataset has to be of extension .json and as filename the city like: San Francisco.json
 
-### Application Architecture
+The standard dataset of San Francisco is already there.
+
+## Getting started instructions
+1. Go to the root folder
+2. Run `sudo docker-compose build`
+3. Run `sudo docker-compose up`
+
+For consequent runs `sudo docker-compose up` will suffice.
+
+## Application Architecture
 * Back-end: Node JS
 * Front-end: React
 * Database: MongoDB
 
-### Routes/API End Points
+## Routes/API End Points
+1. Get all locations in the database
+.* Request
+..* GET /locations
+.* Response
+..* 200: ["location1", "location2"...]
+..* 500: {"error": "Something went wrong: `error`"}
+
+2. Get all columns of the movies in a location
+.* Request
+..* GET /columns/:location
+.* Response
+..* 200: ["column1", "column2"...]
+..* 500: {"error": "Something went wrong: `error`"}
+
+3. Get all movies of a location that fit the description in columns and values
+.* Request
+..* POST /movies/:location
+..* 
+| Key     | Value                     |
+|---------|---------------------------|
+| columns | ["column1", "column2"...] |
+| values  | ["value1", "value2"...]   |
+
+Note length of both should be the same.
+.* Response
+..* 200: [{Geocode: {"lat": `int`, "lng": `int`}, `other properties of movies`}, ...]
+..* 500: {"error": "Something went wrong: `error`"}
 
 ## For the reviewer
 
