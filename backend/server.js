@@ -148,7 +148,7 @@ const initialiseDatabase = async () => {
 
 // Delay as MongoDB container is sometimes slow and strangely MongoDB has
 // no reconnect options according to the documentation of the 2.0 api.
-setTimeout(initialiseDatabase, 3000);
+setTimeout(initialiseDatabase, 4000);
 
 // Creates a find query that searches the db for columns with values
 // that start with the corresponding value in 'values'
@@ -166,9 +166,13 @@ function createFindQuery(columns, values) {
 }
 
 //--------------------------- Route functions ----------------------------------
-// https://medium.com/@Abazhenov/using-async-await-in-express-with-node-8-b8af872c0016
 const asyncMiddleware = fn => (req, res, next) => {
-  Promise.resolve(fn(req, res, next)).catch(next);
+  Promise.resolve(fn(req, res, next))
+    .then( (data) => {
+      next();
+    }).catch((err) => {
+      res.status(500).send("Something went wrong: " + err);
+    });
 };
 
 // Add headers for something called CORS so react can fetch.
@@ -190,13 +194,6 @@ app.use(function(req, res, next) {
 });
 
 app.use(bodyParser.json());
-
-app.get(
-  "/",
-  asyncMiddleware(async (req, res, next) => {
-    res.send(`${DB_URL}\n`);
-  })
-);
 
 app.get(
   "/locations",

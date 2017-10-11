@@ -37,6 +37,9 @@ class App extends Component {
         });
         // We also need the geocode of the location for the map.
         this.geocodeAddress(location);
+      }).catch( (e) => {
+        console.log("Something went wrong in setLocationAndColumns");
+        console.log(e);
       });
   }
 
@@ -49,6 +52,9 @@ class App extends Component {
         });
         this.setState({ locations: locs });
         this.setLocationAndColumns(locs[0]);
+      }).catch( (e) => {
+        console.log("Something went wrong in getLocationsAndColumns");
+        console.log(e);
       });
   }
 
@@ -67,6 +73,9 @@ class App extends Component {
       .then(res => res.json())
       .then(data => {
         this.setState({ movies: data });
+      }).catch( (e) => {
+        console.log("Something went wrong in postMovies");
+        console.log(e);
       });
   }
 
@@ -82,6 +91,7 @@ class App extends Component {
 
   geocodeAddress(address) {
     this.geocoder.geocode({ searchText: address }, this.onResult, function(e) {
+      console.log("Something went wrong in geocodeAddress");
       console.log(e);
     });
   }
