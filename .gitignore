@@ -92,3 +92,4 @@ chrome-user-data
 !src/node_modules
 
 data
+*package-lock.json
