@@ -31,8 +31,7 @@ For consequent runs `sudo docker-compose up` will suffice.
 1. Get all locations in the database
 	* Request
 		* GET /locations
-	* Response
-	* 
+	* Response 
 		| Status | Response                                   |
 		|--------|--------------------------------------------|
 		| 200    | ["location1", "location2"...]              |
@@ -41,7 +40,6 @@ For consequent runs `sudo docker-compose up` will suffice.
 	* Request
 		* GET /columns/:location
 	* Response
-	*
 		| Status | Response                                   |
 		|--------|--------------------------------------------|
 		| 200    | ["column1", "column2"...]                  |
@@ -58,7 +56,6 @@ For consequent runs `sudo docker-compose up` will suffice.
 
 		* Note length of both should be the same.
 	* Response
-	*
 		| Status | Response                                   |
 		|--------|--------------------------------------------|
 		| 200    | [{Geocode: {"lat": `int`, "lng": `int`}, `other properties of movies`}, ...]  |
