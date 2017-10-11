@@ -29,27 +29,26 @@ For consequent runs `sudo docker-compose up` will suffice.
 
 ## Routes/API End Points
 1. Get all locations in the database
-.* Request
-..* GET /locations
-.* Response
-..* 200: ["location1", "location2"...]
-..* 500: {"error": "Something went wrong: `error`"}
-
+	* Request
+		* GET /locations
+	* Response
+		* 200: ["location1", "location2"...]
+		* 500: {"error": "Something went wrong: `error`"}
 2. Get all columns of the movies in a location
-.* Request
-..* GET /columns/:location
-.* Response
-..* 200: ["column1", "column2"...]
-..* 500: {"error": "Something went wrong: `error`"}
+	* Request
+		* GET /columns/:location
+	* Response
+		* 200: ["column1", "column2"...]
+		* 500: {"error": "Something went wrong: `error`"}
 
 3. Get all movies of a location that fit the description in columns and values
-.* Request
-..* POST /movies/:location
-..* 
-| Key     | Value                     |
-|---------|---------------------------|
-| columns | ["column1", "column2"...] |
-| values  | ["value1", "value2"...]   |
+	* Request
+		* POST /movies/:location
+		* 
+			| Key     | Value                     |
+			|---------|---------------------------|
+			| columns | ["column1", "column2"...] |
+			| values  | ["value1", "value2"...]   |
 
 Note length of both should be the same.
 .* Response
