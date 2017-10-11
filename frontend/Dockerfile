@@ -9,10 +9,5 @@ COPY package.json /app/
 RUN npm install
 COPY . /app
 
-# Non root user
-RUN groupadd -r react \
-   && useradd -m -r -g react react
-USER react
-
 EXPOSE 3000
-CMD ["npm", "start"]
+CMD ["npm", "RUN"]

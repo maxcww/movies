@@ -59,6 +59,10 @@ Not much choice here.
 It makes it easy to deploy everywhere.
 
 ### Choices
+It is possible to add more json datasets instead of only San Francsco, but there are requirements of the dataset:
+* The filename should be the city name;
+* It needs to define its columns in 'meta' -> 'view' -> 'columns'].
+* It needs to have one column called 'Locations' or 'Location' defining the location where the movie has been shot.
 
 ### LinkedIn
 

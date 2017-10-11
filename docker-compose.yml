@@ -6,24 +6,28 @@ services:
         volumes:
             - ./data:/data/db
         ports:
-            - "27017:27017"
+            - "${DB_PORT}:${DB_PORT}"
     web:
         container_name: web
         build: ./frontend
         ports:
-            - "3000:3000"
+            - "${WEB_PORT}:${WEB_PORT}"
         links:
             - app
         volumes:
             - ./frontend:/app/
             - /app/node_modules
         command: npm start
+        depends_on:
+            - app
+        env_file:
+            - process.env
     app:
         container_name: app
         restart: always
         build: ./backend
         ports:
-            - "8080:8080"
+            - "${APP_PORT}:${APP_PORT}"
         links:
             - mongo
         volumes:
@@ -31,3 +35,5 @@ services:
             - /app/node_modules
         depends_on:
             - mongo
+        env_file:
+            - process.env

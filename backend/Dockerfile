@@ -8,12 +8,6 @@ WORKDIR /app
 COPY package.json /app/
 RUN npm install
 COPY . /app
-RUN ls
-
-# Non root user
-RUN groupadd -r nodejs \
-   && useradd -m -r -g nodejs nodejs
-USER nodejs
 
 EXPOSE 8080
 CMD ["npm", "start"]
