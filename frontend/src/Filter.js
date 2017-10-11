@@ -36,7 +36,8 @@ class Filter extends Component {
         const suggestions = this.state.suggestions;
         suggestions[index] = data["suggestions"];
         this.setState({ suggestions });
-      }).catch( (e) => {
+      })
+      .catch(e => {
         console.log("Something went wrong in getSuggestions");
         console.log(e);
       });

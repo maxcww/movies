@@ -68,6 +68,7 @@ function getColumnIndices(columns) {
 }
 
 async function getGeocodes(data, columnIndices, place, i) {
+  // By adding the place, the geocode can be more accurate.
   const locations = data.map(dataRow => {
     return dataRow[i] + ", " + place;
   });
@@ -78,6 +79,8 @@ async function getGeocodes(data, columnIndices, place, i) {
 function createInsertData(data, columnIndices, geocodes, i) {
   let toInsert = [];
   data.forEach((dataRow, index) => {
+    // Do not put a movie into the database if it has no geocode or location.
+    // (this would defeat the purpose of the app)
     if (geocodes[index]["value"].length !== 0 && dataRow[i] != null) {
       let row = {};
       for (let col in columnIndices) {
@@ -168,9 +171,10 @@ function createFindQuery(columns, values) {
 //--------------------------- Route functions ----------------------------------
 const asyncMiddleware = fn => (req, res, next) => {
   Promise.resolve(fn(req, res, next))
-    .then( (data) => {
+    .then(data => {
       next();
-    }).catch((err) => {
+    })
+    .catch(err => {
       res.status(500).send("Something went wrong: " + err);
     });
 };

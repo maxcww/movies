@@ -118,9 +118,10 @@ It makes it easy to deploy everywhere. The only things I knew of Docker was how 
 	* It needs to define its columns in 'meta' -> 'view' -> 'columns'].
 	* It needs to have one column called 'Locations' or 'Location' defining the location where the movie has been shot.
 * I have not made any integration tests as the challenge said to only provide unit tests for the API as I only do the back-end track.
-* I also made quite some effort with React(7 days of work), because it is so much more satisfying to see what you have made in the back-end by creating a front-end.
+* I also made quite some effort with React(7 days of work, I am not a front-ender!), because it is so much more satisfying to see what you have made in the back-end by creating a front-end.
 * I have put React and Node JS in different Docker containers as that is the spirit of Docker: every container should do one thing.
 * The Google Maps Geocode did not work for me, so I have used the Here API. Conversely the Here API for the map did not show a map for me in React, so I have used Google Maps there.
+* I have put all the css inside the js files as it is a small application.
 
 ## Todos, what should I have done if I had more time
 * Put the docker containers on a server. I had no time anymore, but it shouldn't be too hard I think.
@@ -135,3 +136,6 @@ It makes it easy to deploy everywhere. The only things I knew of Docker was how 
 * I never program in Javascript and I am really amazed by the performance. Coming from Python, it is refreshing to see how fast code can go.
 * After I converted my functions with callbacks into Promises as the code became really ugly with all the indentations, I still couldn't help but think that Promises are also ugly. Thus I have converted them to async/await functions which is way better!
 * I have spend a lot of time learning React, but I really liked it!
+* I have not repeated any information of the 'Production information' section in the 'For the reviewer' section.
+* There are not many comments in the react js files as most of them are self explainatory.
+* Although I should have focussed more on the back-end, I couldn't think of more functionality in the back-end, so I hope the front-end also gives you a better view of my way of working and thinking.
