@@ -6,13 +6,8 @@ WORKDIR /app
 
 # Install dependencies
 COPY package.json /app/
-RUN npm install
+RUN npm install --silent
 COPY . /app
 
-# Non root user
-RUN groupadd -r nodejs \
-   && useradd -m -r -g nodejs nodejs
-USER nodejs
-
 EXPOSE 3000
-CMD ["npm", "start"]
+CMD ["npm", "RUN"]

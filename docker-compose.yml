@@ -1,20 +1,37 @@
 version: "2"
 services:
-    app:
-        container_name: app
-        # restart: always
-        build: .
-        ports:
-            - "3000:3000"
-        links:
-            - mongo
-        volumes:
-            - .:/app/
-            - /app/node_modules
     mongo:
         container_name: mongo
         image: mongo
         volumes:
             - ./data:/data/db
         ports:
-            - "27017:27017"
+            - "${DB_PORT}:${DB_PORT}"
+    web:
+        container_name: web
+        build: ./frontend
+        ports:
+            - "${WEB_PORT}:${WEB_PORT}"
+        links:
+            - app
+        volumes:
+            - ./frontend:/app/
+            - /app/node_modules
+        command: npm start
+        depends_on:
+            - app
+    app:
+        container_name: app
+        restart: always
+        build: ./backend
+        ports:
+            - "${APP_PORT}:${APP_PORT}"
+        links:
+            - mongo
+        volumes:
+            - ./backend:/app/
+            - /app/node_modules
+        depends_on:
+            - mongo
+        env_file:
+            - .env
