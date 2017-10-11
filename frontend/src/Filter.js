@@ -19,22 +19,18 @@ class Filter extends Component {
   }
 
   getSuggestions(values, index) {
-    fetch(
-      `http://${process.env.HOST}:${process.env.APP_PORT}/suggestions/` +
-        this.props.location,
-      {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          columns: this.props.columns,
-          values: values,
-          index: index
-        })
-      }
-    )
+    fetch("http://0.0.0.0:8080/suggestions/" + this.props.location, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        columns: this.props.columns,
+        values: values,
+        index: index
+      })
+    })
       .then(res => res.json())
       .then(data => {
         const suggestions = this.state.suggestions;

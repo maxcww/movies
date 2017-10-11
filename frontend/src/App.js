@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import LocationSelect from "./LocationSelect.js";
 import Filter from "./Filter.js";
 import MovieMap from "./MovieMap.js";
-console.log(process.env);
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -21,16 +21,14 @@ class App extends Component {
     this.onResult = this.onResult.bind(this);
 
     const platform = new window.H.service.Platform({
-      app_id: process.env.APP_ID,
-      app_code: process.env.APP_CODE
+      app_id: "3RDuoY9LzYF7Kw16kpRN",
+      app_code: "Cj_FHhVJP_y2kbBdXa-hmA"
     });
     this.geocoder = platform.getGeocodingService();
   }
 
   setLocationAndColumns(location) {
-    fetch(
-      `http://${process.env.HOST}:${process.env.APP_PORT}/columns/` + location
-    )
+    fetch("http://0.0.0.0:8080/columns/" + location)
       .then(res => res.json())
       .then(columns => {
         this.setState({
@@ -43,7 +41,7 @@ class App extends Component {
   }
 
   getLocationsAndColumns() {
-    fetch(`http://${process.env.HOST}:${process.env.APP_PORT}/locations`)
+    fetch("http://0.0.0.0:8080/locations")
       .then(res => res.json())
       .then(locations => {
         const locs = locations.map(location => {
@@ -55,21 +53,17 @@ class App extends Component {
   }
 
   postMovies(values) {
-    fetch(
-      `http://${process.env.HOST}:${process.env.APP_PORT}/movies/` +
-        this.state.location,
-      {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          columns: this.state.columns,
-          values: values
-        })
-      }
-    )
+    fetch("http://0.0.0.0:8080/movies/" + this.state.location, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        columns: this.state.columns,
+        values: values
+      })
+    })
       .then(res => res.json())
       .then(data => {
         this.setState({ movies: data });

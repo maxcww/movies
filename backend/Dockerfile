@@ -6,7 +6,7 @@ WORKDIR /app
 
 # Install dependencies
 COPY package.json /app/
-RUN npm install
+RUN npm install --silent
 COPY . /app
 
 EXPOSE 8080

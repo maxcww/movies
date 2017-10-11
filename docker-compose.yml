@@ -20,8 +20,6 @@ services:
         command: npm start
         depends_on:
             - app
-        env_file:
-            - process.env
     app:
         container_name: app
         restart: always
@@ -36,4 +34,4 @@ services:
         depends_on:
             - mongo
         env_file:
-            - process.env
+            - .env
