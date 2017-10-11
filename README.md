@@ -32,10 +32,10 @@ For consequent runs `sudo docker-compose up` will suffice.
 	* Request
 		* GET /locations
 	* Response 
-		| Status | Response                                   |
-		|--------|--------------------------------------------|
-		| 200    | ["location1", "location2"...]              |
-	    | 500    | {"error": "Something went wrong: `error`"} |
+		* | Status | Response                                   |
+		  |--------|--------------------------------------------|
+		  | 200    | ["location1", "location2"...]              |
+	      | 500    | {"error": "Something went wrong: `error`"} |
 2. Get all columns of the movies in a location
 	* Request
 		* GET /columns/:location
