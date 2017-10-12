@@ -81,7 +81,11 @@ function createInsertData(data, columnIndices, geocodes, i) {
   data.forEach((dataRow, index) => {
     // Do not put a movie into the database if it has no geocode or location.
     // (this would defeat the purpose of the app)
-    if (geocodes[index]["value"].length !== 0 && dataRow[i] != null) {
+    if (
+      geocodes[index]["value"] != null &&
+      geocodes[index]["value"].length !== 0 &&
+      dataRow[i] != null
+    ) {
       let row = {};
       for (let col in columnIndices) {
         row[col] = dataRow[columnIndices[col]];
