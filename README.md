@@ -82,7 +82,7 @@ For consequent runs `sudo docker-compose up` will suffice.
 	This is caused by your browser as \<datalist\> is not that well supported on certain browsers. Try Chrome or Chromium.
 
 ## Notes
-* On first run, it will take some time before the server has imported all data into the database, as every movie location will be geocoded. This means that the user can not ask anything of the database.
+* On first run, it will take some time before the server has imported all data into the database, as every movie location will be geocoded. This means that the user cannot ask anything of the database.
 * The unit tests for the API can be run by doing the following: start the server, `sudo docker exec -it app bash` to get into the app container and run `npm test`.
 
 # For the reviewer
@@ -99,28 +99,28 @@ The solution focuses on back-end. I do not have any experience with React, Node 
 ## Application architecture
 
 ### MongoDB
-I have chosen MongoDB instead of MySQL as MySQL doesn't scale that great horizontally. As I have data per city, it is logical to create a collection per city in MongoDB. This way it is possible to insert many more locations in the database without degrading the performance of the app.
+I have chosen for MongoDB instead of MySQL as MySQL doesn't scale that great horizontally. As I have data per city, it is logical to create a collection per city in MongoDB. This way it is possible to insert many more locations in the database without degrading the performance of the app.
 
 ### React
-As I do not have much experience in front-end I have choosen for React as the team is a fan of it and having a front-end in javascript together with a back-end in javascript seemed a natural choice to me. I have used create-my-app to create boilerplate code and worked from there. Everything in frontend/src and frontend/Dockerfile is made by me.
+As I do not have much experience in front-end, I have choosen for React as the team is a fan of it and having a front-end in javascript together with a back-end in javascript seemed like a natural choice to me. I have used create-my-app to create boilerplate code and worked from there. Everything in frontend/src and frontend/Dockerfile is made by me.
 
 ### Node JS
 Not much choice here.
 
 ### Docker
-It makes it easy to deploy everywhere. The only things I knew of Docker was how to docker-compose up. This challenge provided me an opportunity to learn more about Docker in which I succeeded.
+It makes it easy to deploy everywhere. The only thing I knew from Docker was how to docker-compose up. This challenge provided me an opportunity to learn more about Docker in which I succeeded.
 
 ## Choices
 * A big choice was where to implement the functionality of filtering the view using autocompletion search. At first I had all movies taken from the back-end to the front-end. The logical choice would be to filter it client-side, but that would be bad performance-wise as the San Francisco dataset has more than 1000 rows. Thus I have reworked the logic and now the flow is as follow: the user clicks on the options button, and everytime the user searches something, the values of all columns would be sent to the back-end, where the server queries the database based on the values and gives back a unique list of suggestions for the column the user is searching in. This is better than sending all movies back data-wise. Finally, when the user clicks the filter button, the server will send all movies that fit the filter query and the map will be populated with markers.
 * Another choice was to import the movie dataset into the database from a folder instead of a dedicated endpoint for the user. This would be better for the security as no users will ever be able to post something in the database. All current endpoints are made with only one thing in mind: to retrieve information from the database. By doing it this way, only the person who puts the datasets in the folder on the server can mean harm. The datasets will be counted twice for storage space, but this can easily be fixed by deleting the datasets if it has been imported into the database.
 * I have made the app as dynamic as possible in terms of datasets. This way the app can easily be extended by adding more locations with movies. There are some constraint however:
 	* The filename should be the city name;
-	* It needs to define its columns in 'meta' -> 'view' -> 'columns'].
-	* It needs to have one column called 'Locations' or 'Location' defining the location where the movie has been shot.
+	* It needs to define its columns in 'meta' -> 'view' -> 'columns'.
+	* It needs to have one column called 'Locations' or 'locations' defining the location where the movie has been shot.
 * I have not made any integration tests as the challenge said to only provide unit tests for the API as I only do the back-end track.
 * I also made quite some effort with React(7 days of work, I am not a front-ender!), because it is so much more satisfying to see what you have made in the back-end by creating a front-end.
 * I have put React and Node JS in different Docker containers as that is the spirit of Docker: every container should do one thing.
-* The Google Maps Geocode did not work for me, so I have used the Here API. Conversely the Here API for the map did not show a map for me in React, so I have used Google Maps there.
+* The Google Maps Geocode did not work for me, so I have used the Here API. Conversely, the Here API for the map did not show a map for me in React, so I have used Google Maps there.
 * I have put all the css inside the js files as it is a small application.
 
 ## Todos, what should I have done if I had more time

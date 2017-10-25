@@ -67,7 +67,7 @@ function getColumnIndices(columns) {
   return columnIndices;
 }
 
-async function getGeocodes(data, columnIndices, place, i) {
+async function getGeocodes(data, place, i) {
   // By adding the place, the geocode can be more accurate.
   const locations = data.map(dataRow => {
     return dataRow[i] + ", " + place;
@@ -121,15 +121,14 @@ const initialiseDatabase = async () => {
             const columnIndices = getColumnIndices(
               obj["meta"]["view"]["columns"]
             );
-            // Allows other datasets than the SF one with a column 'locations' instead
-            // of 'Locations'.
+            // Allows other datasets than the SF one with a column 'locations' 
+            // instead of 'Locations'.
             const loc = columnIndices.hasOwnProperty("locations")
               ? "locations"
               : "Locations";
             const index = columnIndices[loc];
             const geocodes = await getGeocodes(
               obj["data"],
-              columnIndices,
               place,
               index
             );
